@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import db from "../data/db.js";
+import { db } from "../data/db.js";
 
 export default function useCart() {
   // Verificar si existe algo en localStorage
@@ -9,13 +9,8 @@ export default function useCart() {
   };
 
   //Estados locales
-  const [data, setData] = useState([]);
+  const [data] = useState(db);
   const [cart, setCart] = useState(initialCart);
-
-  // cargar datos
-  useEffect(() => {
-    setData(db);
-  }, []);
 
   // Items mínimos y máximos en el carrito de compras
   const maxItems = 3;
