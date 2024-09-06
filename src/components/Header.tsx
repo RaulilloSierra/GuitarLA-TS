@@ -1,4 +1,15 @@
 import { Fragment } from "react";
+import type { CartItem, GuitarId } from "../types";
+
+interface HeaderProps {
+  cart: CartItem[];
+  deleteFromCart: (id: GuitarId) => void;
+  increaseQuantity: (id: GuitarId) => void;
+  reduceQuantity: (id: GuitarId) => void;
+  clearCart: () => void;
+  isEmpty: boolean;
+  cartTotal: number;
+}
 
 export default function Header({
   cart,
@@ -8,7 +19,7 @@ export default function Header({
   clearCart,
   isEmpty,
   cartTotal,
-}) {
+}: HeaderProps) {
   return (
     <Fragment>
       <header className="py-5 header">

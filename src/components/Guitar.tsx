@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import type { Guitar } from "../types";
 
 type GuitarProps = {
   guitar: Guitar;
