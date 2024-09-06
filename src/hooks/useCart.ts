@@ -1,21 +1,17 @@
 import { useState, useEffect, useMemo } from "react";
-import db from "../data/db.js";
+import { db } from "../data/db.ts";
+import type { Guitar, CartItem, GuitarId } from "../types/index.ts";
 
 export default function useCart() {
   // Verificar si existe algo en localStorage
-  const initialCart = () => {
+  const initialCart = (): CartItem[] => {
     const localStorageCart = localStorage.getItem("cart");
     return localStorageCart ? JSON.parse(localStorageCart) : [];
   };
 
   //Estados locales
-  const [data, setData] = useState([]);
+  const [data] = useState(db);
   const [cart, setCart] = useState(initialCart);
-
-  // cargar datos
-  useEffect(() => {
-    setData(db);
-  }, []);
 
   // Items mínimos y máximos en el carrito de compras
   const maxItems = 3;
@@ -27,7 +23,7 @@ export default function useCart() {
   }, [cart]);
 
   // Agregar al carrito
-  const addToCart = (obj) => {
+  const addToCart = (obj: Guitar) => {
     const objExist = cart.findIndex((guitar) => guitar.id === obj.id);
     if (objExist >= 0) {
       if (cart[objExist].quantity >= maxItems) return;
@@ -35,18 +31,18 @@ export default function useCart() {
       updatedCart[objExist].quantity++;
       setCart(updatedCart);
     } else {
-      obj.quantity = 1;
-      setCart([...cart, obj]);
+      const newObj: CartItem = { ...obj, quantity: 1 };
+      setCart([...cart, newObj]);
     }
   };
 
   // Eliminar del carrito
-  const deleteFromCart = (id) => {
+  const deleteFromCart = (id: GuitarId) => {
     setCart((prevCart) => prevCart.filter((guitar) => guitar.id !== id));
   };
 
   // Incrementar cantidades
-  const increaseQuantity = (id) => {
+  const increaseQuantity = (id: GuitarId) => {
     const increaseQ = cart.map((item) => {
       if (item.id === id && item.quantity < maxItems) {
         return {
@@ -60,7 +56,7 @@ export default function useCart() {
   };
 
   // Reducir cantidades
-  const reduceQuantity = (id) => {
+  const reduceQuantity = (id: GuitarId) => {
     const reduceQ = cart.map((item) => {
       if (item.id === id && item.quantity > minItems) {
         return {

@@ -1,4 +1,6 @@
-const db = [
+import type { Guitar } from "../types";
+
+export const db: Guitar[] = [
   {
     id: 1,
     name: "Lukather",
@@ -96,5 +98,3 @@ const db = [
     price: 379,
   },
 ];
-
-export default db
